@@ -1,0 +1,22 @@
+workflows:
+  flutter-android-apk:
+    name: Flutter Android APK
+
+    environment:
+      flutter: stable
+
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Run tests (optional)
+        script: |
+          flutter test
+
+      - name: Build APK
+        script: |
+          flutter build apk --release
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
