@@ -217,84 +217,6 @@ class _MainScreenState extends State<MainScreen>
     }
   }
 
-  // Opens setting dialog to customize backend server URL
-  void _showSettingsDialog() async {
-    final currentUrl = await ApiService.getServerUrl();
-    final controller = TextEditingController(text: currentUrl);
-
-    if (!mounted) return;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF14141D),
-          title: const Row(
-            children: [
-              Icon(Icons.settings, color: Colors.blueAccent),
-              SizedBox(width: 10),
-              Text('Server Configuration'),
-            ],
-          ),
-           content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Configure the server address or set to DIRECT to query serverlessly:',
-                style: TextStyle(color: Colors.grey, fontSize: 13),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  labelText: 'Server URL / Mode',
-                  hintText: 'DIRECT or e.g. http://localhost:3000',
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Card(
-                color: Color(0xFF1F2230),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    '💡 Enter DIRECT to fetch from daddylive.li serverlessly\n💡 For Android Emulator proxy use http://10.0.2.2:3000\n💡 For custom proxy use e.g. http://192.168.1.50:3000',
-                    style: TextStyle(fontSize: 11, color: Colors.cyanAccent),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await ApiService.setServerUrl(controller.text);
-                if (context.mounted) {
-                  Navigator.pop(context);
-                }
-                _loadAllData();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text(
-                'Save Settings',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,11 +225,6 @@ class _MainScreenState extends State<MainScreen>
 
     // Header actions
     final List<Widget> appBarActions = [
-      IconButton(
-        icon: const Icon(Icons.settings, color: Colors.grey),
-        tooltip: 'Server Settings',
-        onPressed: _showSettingsDialog,
-      ),
       IconButton(
         icon: const Icon(Icons.refresh, color: Colors.grey),
         tooltip: 'Refresh Data',
